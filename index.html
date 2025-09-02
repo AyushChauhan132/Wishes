@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f1020;/* deep navy */
+      --bg2:#231942;/* purple */
+      --accent:#ff80bf;/* pink */
+      --accent-2:#7de2d1;/* mint */
+      --white:#ffffff;
+      --glass:rgba(255,255,255,.08);
+      --glass-strong:rgba(255,255,255,.18);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --slide-duration:5200ms; /* time each slide stays visible */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--white);
+      background: radial-gradient(1200px 1200px at 80% -10%, #3b1d60 0%, transparent 60%),
+                  radial-gradient(1200px 1200px at -10% 110%, #1b4a5a 0%, transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+
+    /* Animated stars/sparkles background */
+    .stars, .stars:after{
+      position:fixed; inset:0; pointer-events:none; z-index:0; content:""; display:block;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.9) 40%, transparent 42%),
+        radial-gradient(2px 2px at 80% 70%, rgba(255,255,255,.7) 40%, transparent 42%),
+        radial-gradient(2px 2px at 60% 10%, rgba(255,255,255,.6) 40%, transparent 42%),
+        radial-gradient(3px 3px at 30% 80%, rgba(255,255,255,.5) 40%, transparent 42%);
+      animation: twinkle 6s linear infinite;
+    }
+    .stars:after{filter:blur(1px); opacity:.6; animation-duration:9s}
+    @keyframes twinkle{0%{opacity:.6} 50%{opacity:1} 100%{opacity:.6}}
+
+    /* Floating balloons */
+    .balloons{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden}
+    .balloon{position:absolute; bottom:-120px; width:56px; height:80px; border-radius:50% 50% 47% 53%/60% 60% 40% 40%;
+      background:var(--accent); box-shadow:var(--shadow); opacity:.6; animation: floatUp 14s linear infinite}
+    .balloon:after{content:""; position:absolute; left:50%; top:78px; width:2px; height:80px; background:rgba(255,255,255,.25)}
+    .balloon:nth-child(2){left:15%; animation-duration:16s; background:#ffd166}
+    .balloon:nth-child(3){left:30%; animation-duration:18s; background:#9bf6ff}
+    .balloon:nth-child(4){left:60%; animation-duration:20s; background:#caffbf}
+    .balloon:nth-child(5){left:80%; animation-duration:22s; background:#bdb2ff}
+    @keyframes floatUp{0%{transform:translateY(0) rotate(0deg)} 100%{transform:translateY(-130vh) rotate(12deg)}}
+
+    /* Main stage */
+    .stage{position:relative; z-index:2; width:100%; height:100vh; display:grid; place-items:center; padding:24px}
+
+    .frame{position:relative; width:min(100%, 1100px); height:min(70vh, 680px); border-radius:28px; overflow:hidden; background:var(--glass); backdrop-filter: blur(8px); box-shadow:var(--shadow)}
+
+    .overlay-gradient{position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.35)); pointer-events:none}
+
+    .slides{position:absolute; inset:0}
+    .slide{position:absolute; inset:0; display:grid; place-items:center; opacity:0; transform:scale(1.02); transition:opacity .7s ease, transform .7s ease}
+    .slide.active{opacity:1; transform:scale(1)}
+
+    .slide img{position:absolute; width:120%; height:120%; object-fit:cover; filter:contrast(1.05) saturate(1.06)}
+
+    /* Ken Burns variants */
+    .kb-in{animation: kbIn var(--slide-duration) ease-in-out both}
+    .kb-out{animation: kbOut var(--slide-duration) ease-in-out both}
+    .kb-left{animation: kbLeft var(--slide-duration) ease-in-out both}
+    .kb-right{animation: kbRight var(--slide-duration) ease-in-out both}
+
+    @keyframes kbIn{from{transform:scale(1.15) translate3d(0,0,0)} to{transform:scale(1.02) translate3d(0,0,0)}}
+    @keyframes kbOut{from{transform:scale(1.02)} to{transform:scale(1.15)}}
+    @keyframes kbLeft{from{transform:scale(1.15) translateX(4%)} to{transform:scale(1.02) translateX(-4%)}}
+    @keyframes kbRight{from{transform:scale(1.15) translateX(-4%)} to{transform:scale(1.02) translateX(4%)}}
+
+    /* Caption */
+    .caption{    position: absolute;
+    bottom: 14px;
+    left: 2px;
+    right: 24px;
+    display: flex
+;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;}
+.chip {
+    backdrop-filter: blur(8px);
+    background: rgb(3 3 3 / 33%);
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: .2px;
+    transform: translateY(12px);
+    opacity: 0;
+    animation: chipIn .6s ease .3s both;
+    font-size: 13px;
+}
+    @keyframes chipIn{to{opacity:1; transform:translateY(0)}}
+
+.title-badge {
+      z-index: 9;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #000000;
+    padding: 10px 14px 3px;
+    border-radius: 14px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    box-shadow: var(--shadow);
+    font-size: 24px;
+    width: 100%;
+    text-transform: uppercase;
+    font-family: cursive;
+}
+img.logo-img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-top: 0px;
+}
+    /* Controls */
+.controls {
+    position: absolute;
+    bottom: 17px;
+    right: 3px;
+    display: flex
+;
+    gap: 10px;
+    z-index: 5;
+}    .btn{display:inline-grid; place-items:center; width:42px; height:42px; border-radius:12px; border:1px solid rgba(255,255,255,.18); background:var(--glass-strong); color:#fff; cursor:pointer; transition:transform .12s ease, background .2s ease; box-shadow: var(--shadow)}
+    .btn:active{transform:scale(.96)}
+    .btn:hover{background:rgba(255,255,255,.25)}
+
+    /* Progress dots */
+    .dots{position:absolute; left:50%; transform:translateX(-50%); bottom:3px; display:flex; gap:8px; z-index:5}
+    .dot{width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.35); outline:1px solid rgba(255,255,255,.25)}
+    .dot.active{background:linear-gradient(135deg, var(--accent), var(--accent-2))}
+
+    /* Intro & Outro overlays */
+    .center-overlay{position:absolute; inset:0; display:grid; place-items:center; text-align:center; gap:12px; padding:20px; z-index:3; pointer-events:none}
+    .intro, .outro{opacity:0; transform:translateY(10px); transition: all .8s ease}
+    .outro{
+        margin-bottom:50px;
+    }
+    .intro.show, .outro.show{opacity:1; transform:translateY(0)}
+    .hbd{font-family:"Great Vibes", cursive; font-size: clamp(42px, 7vw, 88px); line-height:1; text-shadow:0 6px 30px rgba(0,0,0,.55)}
+    .name{font-weight:800; font-size: clamp(18px, 2.2vw, 28px); letter-spacing:.6px; padding:.3rem .8rem; border-radius:999px; background:linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.05)); display:inline-block; border:1px solid rgba(255,255,255,.18)}
+    .sub{opacity:.9}
+    /* .intro{transition: all 5s ease;} */
+    /* Confetti canvas */
+    canvas#confetti{position:absolute; inset:0; z-index:4; pointer-events:none}
+
+    /* Responsive fallbacks */
+    @media (max-width:640px){
+      .frame{height:70vh}
+      .btn{width:35px; height:35px}
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="balloons">
+    <div class="balloon" style="left:5%"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+  </div>
+
+  <div class="stage">
+    <div class="title-badge"> <marquee scrollamount="4">Happy Birthday Sneha <img src="image2.jpeg" class="logo-img"> 👸 🎂 </marquee></div>
+    <div class="frame" id="frame">
+      <div class="slides" id="slides"></div>
+      <div class="overlay-gradient"></div>
+
+      <div class="center-overlay">
+        <div class="intro" id="intro">
+          <div class="hbd">Happy Birthday</div>
+          <div class="name" id="nameTag">Sneha</div>
+          <div class="sub">Always Be Happy ✨</div>
+        </div>
+        <div class="outro" id="outro">
+          <div class="hbd">Wishing you a vary Happy Birthday Sneha ❤️</div>
+          <div class="sub">Forever grateful for you • Have the best year!</div>
+        </div>
+      </div>
+
+      <canvas id="confetti"></canvas>
+
+      <div class="controls">
+        <button class="btn" id="prev" title="Previous">⟨</button>
+        <button class="btn" id="play" title="Play/Pause">⏯</button>
+        <button class="btn" id="next" title="Next">⟩</button>
+        
+      </div>
+      <div class="dots" id="dots"></div>
+     <audio id="bgm" loop preload="auto">
+  <source src="audio.mp3" type="audio/mpeg" />
+</audio>
+    </div>
+  </div>
+
+  <script>
+    /* ------------------------- CONFIGURATION ------------------------- */
+    // 1) Put your best friend's name here (shows on intro/outro):
+    const BESTIE_NAME = "Sneha";
+
+    // 2) Replace the image src values below with your 12 photo paths/urls.
+    //    Captions are optional; leave "" for no chip on that slide.
+    const SLIDES = [
+      { src: "image12.jpeg", caption: "Bestie Goals 👯‍♀️", motion: "kb-in" },
+      { src: "image8.jpeg", caption: "Partner in Crime 🔥", motion: "kb-left" },
+      { src: "image2.jpeg", caption: "Always Smiling 😊", motion: "kb-right" },
+      { src: "image1.jpeg", caption: "Queen Energy 👑", motion: "kb-out" },
+      { src: "image7.jpeg", caption: "Most Beautiful Soul 💕", motion: "kb-in" },
+      { src: "image12.jpeg", caption: "Forever Together 💫", motion: "kb-left" },
+      { src: "image9.jpeg", caption: "The Fun Never Ends 🥳", motion: "kb-right" },
+      { src: "image3.jpeg", caption: "Grateful For You 🌸", motion: "kb-out" },
+      { src: "image4.jpeg", caption: "Slaying Always 💃", motion: "kb-in" },
+      { src: "image10.jpeg", caption: "Sunshine Vibes ✨", motion: "kb-left" },
+      { src: "image1.jpeg", caption: "Perfect Partner 💖", motion: "kb-right" },
+      { src: "image2.jpeg", caption: "Happy Birthday 🎂", motion: "kb-out" },
+    ];
+
+    // 3) Slide duration (ms) – should match --slide-duration in CSS for the motion to feel synced.
+    const DURATION = 5200; // per slide
+
+    // 4) Start with music on? Provide a valid MP3 in the <audio> tag above to use.
+    const START_WITH_MUSIC = false;
+    /* ---------------------------------------------------------------- */
+
+    const slidesEl = document.getElementById('slides');
+    const dotsEl = document.getElementById('dots');
+    const playBtn = document.getElementById('play');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const muteBtn = document.getElementById('mute');
+    const bgm = document.getElementById('bgm');
+    const intro = document.getElementById('intro');
+    const outro = document.getElementById('outro');
+    const nameTag = document.getElementById('nameTag');
+
+    let index = 0,
+        timer = null,
+        isPlaying = true,
+        userInteracted = false;
+
+    nameTag.textContent = BESTIE_NAME;
+
+    // Build slides
+    SLIDES.forEach((s, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.setAttribute('data-i', i);
+
+      const img = document.createElement('img');
+      img.alt = `Slide ${i+1}`;
+      img.loading = 'lazy';
+      img.src = s.src;
+      img.className = s.motion || 'kb-in';
+
+      const caption = document.createElement('div');
+      caption.className = 'caption';
+      if (s.caption) {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.textContent = s.caption;
+        caption.appendChild(chip);
+      }
+
+      slide.appendChild(img);
+      slide.appendChild(caption);
+      slidesEl.appendChild(slide);
+
+      // dots
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.addEventListener('click', () => { goTo(i); });
+      dotsEl.appendChild(dot);
+    });
+
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dots = Array.from(document.querySelectorAll('.dot'));
+
+    function setActive(i){
+      slides.forEach(s => s.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
+      slides[i].classList.add('active');
+      dots[i].classList.add('active');
+    }
+
+    function goTo(i){
+      index = (i + SLIDES.length) % SLIDES.length;
+      setActive(index);
+
+      // show intro for the very first reveal only
+      if(index === 0){
+        showIntro();
+      }else{
+        hideIntro();
+      }
+
+      // show outro when last slide is shown
+      if(index === SLIDES.length - 1){
+        showOutro();
+      }else{
+        hideOutro();
+      }
+    }
+
+    function next(){ goTo(index + 1); }
+    function prev(){ goTo(index - 1); }
+
+    function play(){
+      if(timer) clearInterval(timer);
+      timer = setInterval(next, DURATION);
+      isPlaying = true;
+      playBtn.textContent = '⏸';
+    }
+    function pause(){
+      if(timer) clearInterval(timer);
+      isPlaying = false;
+      playBtn.textContent = '▶';
+    }
+
+    playBtn.addEventListener('click', () => { isPlaying ? pause() : play(); userInteracted = true; });
+    nextBtn.addEventListener('click', () => { pause(); next(); userInteracted = true; });
+    prevBtn.addEventListener('click', () => { pause(); prev(); userInteracted = true; });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowRight'){ pause(); next(); }
+      if(e.key==='ArrowLeft'){ pause(); prev(); }
+      if(e.key===' '){ e.preventDefault(); isPlaying? pause(): play(); }
+    });
+
+    // Autoplay setup
+    setActive(0); // initial
+    play();
+
+    // Music toggle
+    // function tryStartMusic(){
+    //   if(!bgm || !bgm.src) return;
+    //   if(START_WITH_MUSIC && !userInteracted){
+    //     // user gesture often required; wait for first click
+    //     const first = ()=>{ bgm.muted = false; bgm.play().catch(()=>{}); document.removeEventListener('click', first); };
+    //     document.addEventListener('click', first);
+    //   }
+    // }
+    // tryStartMusic();
+
+    // muteBtn.addEventListener('click', ()=>{
+    //   if(!bgm || !bgm.src) return;
+    //   bgm.muted = !bgm.muted;
+    //   if(!bgm.paused && bgm.muted===false) bgm.play().catch(()=>{});
+    //   muteBtn.style.opacity = bgm.muted ? .6 : 1;
+    // });
+ bgm.play().catch(() => {
+    console.log("Autoplay blocked, waiting for click/tap...");
+  });
+
+  // start music on first user interaction (required on mobile)
+  document.addEventListener(
+    "click",
+    () => {
+      bgm.play();
+    },
+    { once: true }
+  );
+    // Intro/Outro logic with confetti bursts
+    function showIntro(){
+      intro.classList.add('show');
+      burstConfetti(200);
+      setTimeout(()=>intro.classList.remove('show'), 1400);
+    }
+    function hideIntro(){ intro.classList.remove('show'); }
+
+    function showOutro(){
+      outro.classList.add('show');
+      setTimeout(()=> burstConfetti(320), 400);
+    }
+    function hideOutro(){ outro.classList.remove('show'); }
+
+    /* ----------------------------- CONFETTI ----------------------------- */
+    const confettiCanvas = document.getElementById('confetti');
+    const ctx = confettiCanvas.getContext('2d');
+    let confettiPieces = [];
+
+    function resizeCanvas(){
+      confettiCanvas.width = confettiCanvas.clientWidth;
+      confettiCanvas.height = confettiCanvas.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas, {passive:true});
+    resizeCanvas();
+
+    function burstConfetti(count=160){
+      const w = confettiCanvas.width, h = confettiCanvas.height;
+      for(let i=0;i<count;i++){
+        confettiPieces.push({
+          x: w/2,
+          y: h/2,
+          vx: (Math.random()*2-1)*6,
+          vy: (Math.random()*2-1)*6 - 2,
+          g: 0.12 + Math.random()*0.08,
+          size: 4 + Math.random()*6,
+          rot: Math.random()*Math.PI*2,
+          vr: (Math.random()*2-1)*0.2,
+          alpha: 1,
+          shape: Math.random()>.5?'rect':'circle',
+          color: Math.random()>.5? '#ffd166' : (Math.random()>.5? '#9bf6ff' : '#ff80bf')
+        });
+      }
+    }
+
+    function drawConfetti(){
+      ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+      confettiPieces.forEach(p => {
+        p.vy += p.g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.alpha -= 0.007;
+      });
+      confettiPieces = confettiPieces.filter(p => p.alpha>0 && p.y < confettiCanvas.height+40);
+      confettiPieces.forEach(p => {
+        ctx.save();
+        ctx.globalAlpha = Math.max(p.alpha, 0);
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        if(p.shape==='rect'){
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+        }else{
+          ctx.beginPath();
+          ctx.arc(0,0,p.size*0.45,0,Math.PI*2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+    drawConfetti();
+
+    // Preload images for smoother playback
+    SLIDES.forEach(s => { const im = new Image(); im.src = s.src; });
+
+    // Start with a celebration 🎉
+    showIntro();
+  </script>
+</body>
+</html>
